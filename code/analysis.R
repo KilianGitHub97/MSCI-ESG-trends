@@ -453,7 +453,6 @@ assertthat::are_equal(log_prices_bm_components, log_prices_bm %*% identity)
 factor_beta <- cov_matr_bm_components[rownames(cov_matr), c("benchmark", principal_component_names)] %*% solve(cov_matr_bm_components[c("benchmark", principal_component_names), c("benchmark", principal_component_names)])
 factor_beta <- t(factor_beta)
 
-cov_matr_bm_components[rownames(cov_matr), c("benchmark", principal_component_names)] == factor_weights
 # the calculation was correct if the original market beta vector is equivalent
 # to the benchmark vector in the factor beta matrix
 assertthat::are_equal(solve(factor_cov_matr), solve(cov_matr_bm_components[c("benchmark", principal_component_names), c("benchmark", principal_component_names)]))
@@ -715,6 +714,11 @@ for (index in 1:nrow(metadata)) {
 #-------------------------------- Plot Results -------------------------------#
 
 results <- as.data.frame(results)
+
+blinded_results <- results %>%
+  select(-c(controversy, CD, category))
+
+#write.csv(blinded_results, "../data/blinded_results.csv")
 
 return_diff <- ggplot(
   mapping = aes(
