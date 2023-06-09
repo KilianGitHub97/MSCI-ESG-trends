@@ -11,11 +11,14 @@ rm(list=ls(all=TRUE))
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 ##### Load Libraries
-library(tidyverse)
-library(readxl)
-library(tidyquant)
-library(collapse)
-library(zoo)
+pkgs <- c(
+  "tidyverse",
+  "readxl",
+  "tidyquant",
+  "collapse",
+  "zoo"
+)
+lapply(pkgs, library, character.only = TRUE)
 
 #source functions
 source("funcs.R")
@@ -656,7 +659,13 @@ assertthat::are_equal(length(date_vector), nrow(log_prices_alpha))
 
 #create matrix for the results
 results <- matrix(nrow=nrow(metadata), ncol = 7)
-colnames(results) <- c("equity", "category", "mean_after", "mean_before", "after_minus_before", "controversy", "CD")
+colnames(results) <- c("equity", 
+                       "category", 
+                       "mean_after", 
+                       "mean_before", 
+                       "after_minus_before", 
+                       "controversy", 
+                       "CD")
 
 #add the date vector to the alpha
 log_prices_alpha_date <- cbind(log_prices_alpha,"Date" = date_vector)
